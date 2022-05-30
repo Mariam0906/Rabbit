@@ -27,21 +27,30 @@ function createMatrix(MATRIX_SIZE){
     }
     return array
 }
-console.log(createMatrix(MATRIX_SIZE))
+let array = createMatrix(MATRIX_SIZE)
+console.log(array)
 
 function findRandomFreeCoord(array){
     let rand1 = Math.floor(Math.random() * array.length);
+    
     // let rand2 = Math.floor(Math.random() * array.length);
-    console.log(array[rand1][0])
+    return array[rand1][0]
 }
-function rabbitPosition(){
-    const newArray = (createMatrix(MATRIX_SIZE)).map((elem)=>findRandomFreeCoord(createMatrix(MATRIX_SIZE)))
-    return newArray
-}
-rabbitPosition()
 
 
-findRandomFreeCoord(createMatrix(MATRIX_SIZE))
+function rabbitPosition(array){
+    let randomCoord = findRandomFreeCoord(createMatrix(MATRIX_SIZE))
+    
+    // const newArray = (createMatrix(MATRIX_SIZE)).map((elem)=>findRandomFreeCoord(createMatrix(MATRIX_SIZE)))
+    // return newArray
+return array.splice(randomCoord, "1")
+
+}
+console.log(rabbitPosition(array))
+
+
+
+
 
 
 
