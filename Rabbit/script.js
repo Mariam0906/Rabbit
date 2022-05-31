@@ -13,7 +13,7 @@ const button = document.getElementById("startButton")
 button.onclick = function (){
     const MATRIX_SIZE = document.getElementById("select").value
     let array = createMatrix(MATRIX_SIZE)
-    charactersPosition(array)
+    charactersPosition(array,MATRIX_SIZE)
     console.log(array)
 }
 
@@ -28,8 +28,7 @@ function findRandomFreeCoord(array){
 }
 function createPositionForCharacters(array, character){
     const [x,y] = findRandomFreeCoord(array)
-    array[x][y] = character
-    
+    array[x][y] = character 
 }
 function rabbitPosition(array){
     createPositionForCharacters(array, "Rabbit")
@@ -47,12 +46,15 @@ function fencePosition(array,fenceCount){
 function homePosition(array){
     createPositionForCharacters(array, "Home")
 }
-function charactersPosition(array){
+function charactersPosition(array, size){
+    const wolfCount = size * 50 / 100
+    const fenceCount = size * 30 / 100
     rabbitPosition(array)
-    wolvesPosition(array, 3)
-    fencePosition(array, 2)
+    wolvesPosition(array, wolfCount)
+    fencePosition(array, fenceCount)
     homePosition(array) 
 }
+
 
 
 
