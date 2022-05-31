@@ -69,4 +69,10 @@ console.log(getRandomElement(arr))
 
 
 ///for(let i  = 0, i < )
- 
+
+
+ // theBeginningOfAdventures() {
+//     createMatrix()
+//     characterPosition()
+//     progressOfEvents()
+// }

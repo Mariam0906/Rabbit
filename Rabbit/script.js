@@ -1,17 +1,6 @@
 
-// theBeginningOfAdventures() {
-//     createMatrix()
-//     characterPosition()
-//     progressOfEvents()
-// }
-
-   
 
 const elemValue = null
-const rabbit = 1
-const wolf = 2
-const fence = 3
-const home = 4
  function createMatrix(size){
         let matrix = new Array
             for (i = 0; i < size; i++){
@@ -66,14 +55,6 @@ function charactersPosition(array){
     fencePosition(array, 2)
     homePosition(array) 
 }
-
-    
-// wolfCount = 3 ///5x5
-// wolfCount = 5 ///7x7
-// wolfCount = 6 ///10x10
-// fenceCount = 2 ///5x5
-// fenceCount = 3///7x7
-// fenceCount = 4 ///10x10
 
 
 
