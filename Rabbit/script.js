@@ -1,5 +1,3 @@
-
-
 const elemValue = null
  function createMatrix(size){
         let matrix = new Array
