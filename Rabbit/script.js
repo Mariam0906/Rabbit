@@ -10,18 +10,16 @@ const elemValue = null
         return matrix
     }
 const button = document.getElementById("startButton")
-button.onclick = function (){
-    const MATRIX_SIZE = document.getElementById("select").value
-    let array = createMatrix(MATRIX_SIZE)
-    charactersPosition(array,MATRIX_SIZE)
-    console.log(array)
-
-    let character = "Rabbit"
-    let characterCoord = findCharecterCoord(array, character)
-    console.log(characterCoord[0][0])
-    document.addEventListener("keydown",function(event){
-        rabbitMoving(array, characterCoord,event.key)
-    })
+    button.onclick = function (){
+        const MATRIX_SIZE = document.getElementById("select").value
+        let array = createMatrix(MATRIX_SIZE)
+            charactersPosition(array,MATRIX_SIZE)
+        console.log(array)
+        let character = "Rabbit"
+            document.addEventListener("keydown",function(event){
+            let characterCoord = findCharecterCoord(array, character)
+                    rabbitMoving(array, characterCoord,event.key)
+        })
 }
 
 function findRandomFreeCoord(array){
@@ -71,48 +69,67 @@ function findCharecterCoord(array, character){
         return accumulator
     }
     return array.reduce(findInMatrix, [])
-}
-
-// function rabbitMoving(){
-//     moveUp()
-//     // moveRight()
-//     // moveLeft()
-//     // moveDown()
-// }
+}   
 
 function rabbitMoving(array, characterCoord,eventKey){
-        if(eventKey == "ArrowUp"){
-            const oldR = characterCoord[0][0] 
-            const r = oldR - 1
-            const c = characterCoord[0][1]
+    if(eventKey === "ArrowUp"){
+        const oldR = characterCoord[0][0] 
+        const r = oldR - 1
+        const c = characterCoord[0][1]
+        const newFreeCoord = array[r][c]
+        if(newFreeCoord === "Home"){ 
+            alert("Congreates, you'r won!!!")
+        }else if(newFreeCoord === "Wolf"){
+            alert("Your lose")
+        }else if(newFreeCoord === null){
             array[r][c] = "Rabbit"
             array[oldR][c] = null
-            console.log(array)
         }
-        if(eventKey == "ArrowDown"){
-            const oldR = characterCoord[0][0] 
-            const r = oldR + 1
-            const c = characterCoord[0][1]
+    }
+    if(eventKey === "ArrowDown"){
+        const oldR = characterCoord[0][0] 
+        const r = oldR + 1
+        const c = characterCoord[0][1]
+        const newFreeCoord = array[r][c]
+        if(newFreeCoord === "Home"){ 
+            alert("Congreates, you'r won!!!")
+        }else if(newFreeCoord === "Wolf"){
+            alert("Your lose")
+        }else if(newFreeCoord === null){
             array[r][c] = "Rabbit"
             array[oldR][c] = null
-            console.log(array)
         }
-        if(eventKey == "ArrowLeft"){
-            const oldR = characterCoord[0][1] 
-            const r = oldR - 1
-            const c = characterCoord[0][0]
+    }
+    if(eventKey === "ArrowLeft"){
+        const oldR = characterCoord[0][1] 
+        const r = oldR - 1
+        const c = characterCoord[0][0]
+        const newFreeCoord = array[c][r]
+        if(newFreeCoord === "Home"){ 
+            alert("Congreates, you'r won!!!")
+        }else if(newFreeCoord === "Wolf"){
+            alert("Your lose")
+        }else if(newFreeCoord === null){
             array[c][r] = "Rabbit"
             array[c][oldR] = null
-            console.log(array)
         }
-        if(eventKey == "ArrowRight"){
-            const oldR = characterCoord[0][1] 
-            const r = oldR + 1
-            const c = characterCoord[0][0]
+    }
+    if(eventKey === "ArrowRight"){
+        const oldR = characterCoord[0][1] 
+        const r = oldR + 1
+        const c = characterCoord[0][0]
+        const newFreeCoord = array[c][r]
+        if(newFreeCoord === "Home"){ 
+            alert("Congreates, you'r won!!!")
+        }else if(newFreeCoord === "Wolf"){
+            alert("Your lose")
+        }else if(newFreeCoord === null){
             array[c][r] = "Rabbit"
             array[c][oldR] = null
-            console.log(array)
+            
         }
+    } 
+    console.log(array)
 }
     
 
