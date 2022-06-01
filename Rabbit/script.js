@@ -19,8 +19,9 @@ button.onclick = function (){
     let character = "Rabbit"
     let characterCoord = findCharecterCoord(array, character)
     console.log(characterCoord[0][0])
-    
-   rabbitMoving(array, characterCoord)
+    document.addEventListener("keydown",function(event){
+        rabbitMoving(array, characterCoord,event.key)
+    })
 }
 
 function findRandomFreeCoord(array){
@@ -79,9 +80,8 @@ function findCharecterCoord(array, character){
 //     // moveDown()
 // }
 
-function rabbitMoving(array, characterCoord){
-    document.addEventListener("keydown",function(event){
-        if(event.key == "ArrowUp"){
+function rabbitMoving(array, characterCoord,eventKey){
+        if(eventKey == "ArrowUp"){
             const oldR = characterCoord[0][0] 
             const r = oldR - 1
             const c = characterCoord[0][1]
@@ -89,7 +89,7 @@ function rabbitMoving(array, characterCoord){
             array[oldR][c] = null
             console.log(array)
         }
-        if(event.key == "ArrowDown"){
+        if(eventKey == "ArrowDown"){
             const oldR = characterCoord[0][0] 
             const r = oldR + 1
             const c = characterCoord[0][1]
@@ -97,7 +97,7 @@ function rabbitMoving(array, characterCoord){
             array[oldR][c] = null
             console.log(array)
         }
-        if(event.key == "ArrowLeft"){
+        if(eventKey == "ArrowLeft"){
             const oldR = characterCoord[0][1] 
             const r = oldR - 1
             const c = characterCoord[0][0]
@@ -105,7 +105,7 @@ function rabbitMoving(array, characterCoord){
             array[c][oldR] = null
             console.log(array)
         }
-        if(event.key == "ArrowRight"){
+        if(eventKey == "ArrowRight"){
             const oldR = characterCoord[0][1] 
             const r = oldR + 1
             const c = characterCoord[0][0]
@@ -113,9 +113,6 @@ function rabbitMoving(array, characterCoord){
             array[c][oldR] = null
             console.log(array)
         }
-    })
-    
-    return array
 }
     
 
