@@ -76,3 +76,10 @@ console.log(getRandomElement(arr))
 //     characterPosition()
 //     progressOfEvents()
 // }
+//     const MATRIX_SIZE = document.getElementById("select").value
+//         let array = createMatrix(MATRIX_SIZE)
+//         let character = "Rabbit"
+//         let characterCoord = findCharecterCoord(array, character)
+//         const x = characterCoord[0][0] - 1
+//         const y = characterCoord[0][1]
+// }

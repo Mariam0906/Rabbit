@@ -15,6 +15,12 @@ button.onclick = function (){
     let array = createMatrix(MATRIX_SIZE)
     charactersPosition(array,MATRIX_SIZE)
     console.log(array)
+
+    let character = "Rabbit"
+    let characterCoord = findCharecterCoord(array, character)
+    console.log(characterCoord[0][0])
+    
+    rabbitMoving(array)
 }
 
 function findRandomFreeCoord(array){
@@ -47,28 +53,38 @@ function homePosition(array){
     createPositionForCharacters(array, "Home")
 }
 function charactersPosition(array, size){
-    const wolfCount = size * 50 / 100
-    const fenceCount = size * 30 / 100
+    const wolfCount = size * 60 / 100
+    const fenceCount = size * 40 / 100
     rabbitPosition(array)
     wolvesPosition(array, wolfCount)
     fencePosition(array, fenceCount)
     homePosition(array) 
 }
+function findCharecterCoord(array, character){
+    const findInMatrix = function (accumulator, row, x){
+        row.forEach((elem, y) => {
+            if(elem === character){
+                accumulator.push([x, y])
+            }            
+        })
+        return accumulator
+    }
+    return array.reduce(findInMatrix, [])
+}
 
+// function rabbitMoving(){
+//     moveUp()
+//     // moveRight()
+//     // moveLeft()
+//     // moveDown()
+// }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function rabbitMoving(array){
+    document.addEventListener("keydown",function(event){
+        if(event.key == "ArrowUp"){
+            console.log(array)
+        }
+    })
+}
+    
 
