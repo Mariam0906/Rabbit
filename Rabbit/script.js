@@ -83,9 +83,10 @@ function rabbitMoving(array, characterCoord){
     document.addEventListener("keydown",function(event){
         if(event.key == "ArrowUp"){
             const oldR = characterCoord[0][0] 
-            const r = urishBan - 1
+            const r = oldR - 1
             const c = characterCoord[0][1]
             array[r][c] = "Rabbit"
+            array[oldR][c] = null
             console.log(array)
         }
         if(event.key == "ArrowDown"){
@@ -93,6 +94,7 @@ function rabbitMoving(array, characterCoord){
             const r = oldR + 1
             const c = characterCoord[0][1]
             array[r][c] = "Rabbit"
+            array[oldR][c] = null
             console.log(array)
         }
         if(event.key == "ArrowLeft"){
@@ -100,6 +102,7 @@ function rabbitMoving(array, characterCoord){
             const r = oldR - 1
             const c = characterCoord[0][0]
             array[c][r] = "Rabbit"
+            array[c][oldR] = null
             console.log(array)
         }
         if(event.key == "ArrowRight"){
@@ -107,10 +110,11 @@ function rabbitMoving(array, characterCoord){
             const r = oldR + 1
             const c = characterCoord[0][0]
             array[c][r] = "Rabbit"
-            
+            array[c][oldR] = null
             console.log(array)
         }
     })
+    
     return array
 }
     
