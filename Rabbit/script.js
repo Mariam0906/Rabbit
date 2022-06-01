@@ -20,7 +20,7 @@ button.onclick = function (){
     let characterCoord = findCharecterCoord(array, character)
     console.log(characterCoord[0][0])
     
-    rabbitMoving(array)
+   rabbitMoving(array, characterCoord)
 }
 
 function findRandomFreeCoord(array){
@@ -79,12 +79,39 @@ function findCharecterCoord(array, character){
 //     // moveDown()
 // }
 
-function rabbitMoving(array){
+function rabbitMoving(array, characterCoord){
     document.addEventListener("keydown",function(event){
         if(event.key == "ArrowUp"){
+            const oldR = characterCoord[0][0] 
+            const r = urishBan - 1
+            const c = characterCoord[0][1]
+            array[r][c] = "Rabbit"
+            console.log(array)
+        }
+        if(event.key == "ArrowDown"){
+            const oldR = characterCoord[0][0] 
+            const r = oldR + 1
+            const c = characterCoord[0][1]
+            array[r][c] = "Rabbit"
+            console.log(array)
+        }
+        if(event.key == "ArrowLeft"){
+            const oldR = characterCoord[0][1] 
+            const r = oldR - 1
+            const c = characterCoord[0][0]
+            array[c][r] = "Rabbit"
+            console.log(array)
+        }
+        if(event.key == "ArrowRight"){
+            const oldR = characterCoord[0][1] 
+            const r = oldR + 1
+            const c = characterCoord[0][0]
+            array[c][r] = "Rabbit"
+            
             console.log(array)
         }
     })
+    return array
 }
     
 
