@@ -73,18 +73,22 @@ function findCharecterCoord(array, character){
 
 function rabbitMoving(array, characterCoord,eventKey){
     if(eventKey === "ArrowUp"){
-        const oldR = characterCoord[0][0] 
+        let oldR = characterCoord[0][0] 
         const r = oldR - 1
         const c = characterCoord[0][1]
         const newFreeCoord = array[r][c]
         if(newFreeCoord === "Home"){ 
-            alert("Congreates, you'r won!!!")
+            alert("Մալադեց, դու դեմք ես")
         }else if(newFreeCoord === "Wolf"){
-            alert("Your lose")
+            alert("Հուսահատվեեես ոչ")
+        }else if(oldR === 0){
+            oldR = array.length-1
+            array[roldR][c] = "Rabbit" 
         }else if(newFreeCoord === null){
             array[r][c] = "Rabbit"
             array[oldR][c] = null
         }
+       
     }
     if(eventKey === "ArrowDown"){
         const oldR = characterCoord[0][0] 
@@ -92,9 +96,9 @@ function rabbitMoving(array, characterCoord,eventKey){
         const c = characterCoord[0][1]
         const newFreeCoord = array[r][c]
         if(newFreeCoord === "Home"){ 
-            alert("Congreates, you'r won!!!")
+            alert("Մալադեց, դու դեմք ես")
         }else if(newFreeCoord === "Wolf"){
-            alert("Your lose")
+            alert("Հուսահատվեեես ոչ")
         }else if(newFreeCoord === null){
             array[r][c] = "Rabbit"
             array[oldR][c] = null
@@ -106,9 +110,9 @@ function rabbitMoving(array, characterCoord,eventKey){
         const c = characterCoord[0][0]
         const newFreeCoord = array[c][r]
         if(newFreeCoord === "Home"){ 
-            alert("Congreates, you'r won!!!")
+            alert("Մալադեց, դու դեմք ես")
         }else if(newFreeCoord === "Wolf"){
-            alert("Your lose")
+            alert("Հուսահատվեեես ոչ")
         }else if(newFreeCoord === null){
             array[c][r] = "Rabbit"
             array[c][oldR] = null
@@ -120,9 +124,9 @@ function rabbitMoving(array, characterCoord,eventKey){
         const c = characterCoord[0][0]
         const newFreeCoord = array[c][r]
         if(newFreeCoord === "Home"){ 
-            alert("Congreates, you'r won!!!")
+            alert("Մալադեց, դու դեմք ես")
         }else if(newFreeCoord === "Wolf"){
-            alert("Your lose")
+            alert("Հուսահատվեեես ոչ")
         }else if(newFreeCoord === null){
             array[c][r] = "Rabbit"
             array[c][oldR] = null
