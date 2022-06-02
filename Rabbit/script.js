@@ -21,7 +21,7 @@ const button = document.getElementById("startButton")
                 rabbitMoving(array, characterCoord,event.key)
         })
         findWolfCoords(array)
-       console.log(findAllNullCoords(array, null))
+       findAllNullCoords(array)
 } 
 
 function findRandomFreeCoord(array){
@@ -150,16 +150,9 @@ function findWolfCoords(array){
     console.log(wolfCoord)
 }
 
-function findAllNullCoords(array, value){
-    const nullCoords = function(accumulator, row, x){
-        row.forEach((elem, y) => {
-            if(elem === value){
-                accumulator.push([x, y])
-            }
-        })
-        return accumulator
-    }
-    return array.reduce(nullCoords, [])
+function findAllNullCoords(array){
+    const nullCoord =  findCharecterCoord(array, null)
+    console.log(nullCoord)
 }
 
 
