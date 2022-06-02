@@ -74,21 +74,29 @@ function findCharecterCoord(array, character){
 function rabbitMoving(array, characterCoord,eventKey){
     if(eventKey === "ArrowUp"){
         let oldR = characterCoord[0][0] 
-        const r = oldR - 1
         const c = characterCoord[0][1]
-        const newFreeCoord = array[r][c]
+        if(oldR === 0){
+             array[oldR][c] = null
+             oldR = array.length - 1
+             array[oldR][c] = "Rabbit" 
+        }else{
+            let r = oldR - 1 
+            const newFreeCoord = array[r][c]
+            if(newFreeCoord === null){
+                array[r][c] = "Rabbit"
+                array[oldR][c] = null
+            }
+        }
+        let r = oldR - 1 
+            const newFreeCoord = array[r][c]
         if(newFreeCoord === "Home"){ 
             alert("Մալադեց, դու դեմք ես")
-        }else if(newFreeCoord === "Wolf"){
+        } 
+        if(newFreeCoord === "Wolf"){
             alert("Հուսահատվեեես ոչ")
-        }else if(oldR === 0){
-            oldR = array.length-1
-            array[roldR][c] = "Rabbit" 
-        }else if(newFreeCoord === null){
-            array[r][c] = "Rabbit"
-            array[oldR][c] = null
         }
        
+         
     }
     if(eventKey === "ArrowDown"){
         const oldR = characterCoord[0][0] 
@@ -135,5 +143,6 @@ function rabbitMoving(array, characterCoord,eventKey){
     } 
     console.log(array)
 }
+
     
 
