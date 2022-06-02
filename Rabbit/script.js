@@ -18,9 +18,11 @@ const button = document.getElementById("startButton")
         let character = "Rabbit"
             document.addEventListener("keydown",function(event){
             let characterCoord = findCharecterCoord(array, character)
-                    rabbitMoving(array, characterCoord,event.key)
+                rabbitMoving(array, characterCoord,event.key)
         })
-}
+        findWolfCoords(array)
+       console.log(findAllNullCoords(array, null))
+} 
 
 function findRandomFreeCoord(array){
     const x = Math.floor(Math.random() * array.length);
@@ -143,6 +145,21 @@ function rabbitMoving(array, characterCoord,eventKey){
     } 
     console.log(array)
 }
+function findWolfCoords(array){
+    const wolfCoord =  findCharecterCoord(array, "Wolf")
+    console.log(wolfCoord)
+}
 
-    
+function findAllNullCoords(array, value){
+    const nullCoords = function(accumulator, row, x){
+        row.forEach((elem, y) => {
+            if(elem === value){
+                accumulator.push([x, y])
+            }
+        })
+        return accumulator
+    }
+    return array.reduce(nullCoords, [])
+}
+
 
