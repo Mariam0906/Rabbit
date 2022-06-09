@@ -2,22 +2,21 @@ const elemValue = null
 let characters = [
   {
     name: "Rabbit",
-    img: "images/rabbit.jpg"
+    img: "images/rabbit.jpg",
   },
   {
-      name: "Home",
-      img: "images/home.png"
+    name: "Home",
+    img: "images/home.png",
   },
   {
-      name: "Fence",
-      img: "images/fence.jpg"
+    name: "Fence",
+    img: "images/fence.jpg",
   },
   {
-      name: "Wolf",
-      img: "images/volk.kachok.jpg"
-  }
+    name: "Wolf",
+    img: "images/wolf.jpg"
+  },
 ]
-
 
 function createMatrix(size) {
   let matrix = new Array()
@@ -35,6 +34,7 @@ button.onclick = function () {
   let array = createMatrix(MATRIX_SIZE)
   charactersPosition(array, MATRIX_SIZE)
   console.log(array)
+  toPaintBoard(array)
   let character = "Rabbit"
   document.addEventListener("keydown", function (event) {
     let characterCoord = findCharecterCoord(array, character)
@@ -57,14 +57,11 @@ button.onclick = function () {
       moveCharactertRight(array, oldX, Y, oldY)
     }
     wolfCoord = findWolfCoords(array)
-    createDivs(array, oldX, oldY )
-     //wolfPosibleSteps(array)
+    wolfPosibleSteps(array)
     //console.log(cellsNextToTheWolf(array, wolfCoord))
-   
+
     //console.log(chackCoordLegality([oldX,oldY], array))
   })
-
-  //    findAllNullCoords(array)
 }
 
 function findRandomFreeCoord(array) {
@@ -214,64 +211,103 @@ function cellsNextToTheWolf(array, coord) {
   if (chackCoordLegality(right, array)) {
     legalMove.push(right)
   }
-  return legalMove.filter((item) => array[item[x]][item[y]] === null || array[item[x]][item[y]] === "Rabbit")
+  return legalMove.filter(
+    (item) =>
+      array[item[x]][item[y]] === null || array[item[x]][item[y]] === "Rabbit"
+  )
 }
 
-function moveWolf(array,[newX,newY],[oldX,oldY]){
-    if(array[newX][newY] === "Rabbit"){
-        message("Your lose")
-    }else{
-        array[newX][newY] = "Wolf"
-        array[oldX][oldY] = null
-    }
-}
+// function moveWolf(array,[newX,newY],[oldX,oldY]){
+//     if(array[newX][newY] === "Rabbit"){
+//         message("You lose")
+//     }else{
+//         array[newX][newY] = "Wolf"
+//         array[oldX][oldY] = null
+//     }
+// }
 
 function calculateDistance([A, B], [A1, B1]) {
-   dis =  Math.sqrt(Math.pow((A - A1), 2) + Math.pow((B - B1), 2))
-   return dis
+  dis = Math.sqrt(Math.pow(A - A1, 2) + Math.pow(B - B1, 2))
+  return dis
 }
+
+// function wolfPosibleSteps(array) {
+//   const coords = findCharecterCoord(array, "Wolf")
+//   const rabbitCoordArray = findCharecterCoord(array, "Rabbit")
+//   coords.forEach(coord => {
+//     const wolfNearCells = cellsNextToTheWolf(array, coord)
+//     const nearCellIndexes = []
+//     let dist = []
+//     wolfNearCells.forEach(cell => {
+//       dist.push(calculateDistance(cell, rabbitCoordArray))
+//       nearCellIndexes.push(cell)
+//     })
+
+//     ind = dist.indexOf(Math.min(...dist))
+// console.log(ind)
+//     //moveWolf(array, nearCellIndexes[ind],coord)
+//   })
+// }
 
 function wolfPosibleSteps(array) {
   const coords = findCharecterCoord(array, "Wolf")
   const rabbitCoordArray = findCharecterCoord(array, "Rabbit")
-  coords.forEach((coord) => {
-    const wolfNearCells = cellsNextToTheWolf(array, coord)
-    const nearCellIndexes = []
-    const dist = []
-    wolfNearCells.forEach(cell => {
-      dist.push(calculateDistance(cell, rabbitCoordArray))
-      nearCellIndexes.push(cell)
-    })
-    i = dist.indexOf(Math.min(...dist))
-    moveWolf(array, nearCellIndexes[i],coord)
-  })
+  const rabbitCoord = rabbitCoordArray[0]
+  const wolfPosibleStep = (wolf) => {
+    const steps = cellsNextToTheWolf(array, wolf)
+    if (steps !== undefined) {
+      const dist = steps.map((step) => calculateDistance(rabbitCoord, step))
+      const i = dist.indexOf(Math.min(...dist))
+      const nearCell = steps[i]
+      if (nearCell !== undefined) {
+        array[nearCell[0]][nearCell[1]] = "Wolf"
+        array[wolf[0]][wolf[1]] = null
+      }
+    }
+  }
+  coords.forEach(wolfPosibleStep)
+  return array
 }
 
-function createDivs(array,x,y){
-   const div = document.createElement("div")
-    div.id = `${x}${y}`
-    img = createImg(array[x][y])
-    div.appendChild(img)
-    return div
-}
-function createImg(coord){
-   img = document.createElement("img")
-   if(coord === "Rabbit"){
-      img.src = "images/rabbit.jpg"
-   }
-    if (coord === "Home") {
-      img.src = "images/home.png"
+function toPaintBoard(array) {
+  board = document.getElementById("board")
+  board.innerHTML = ""
+
+  const width = array.length * 30 + 2 * array.length
+  board.style.width = `${width}px`
+  board.style.height = `${width}px`
+  for (let i = 0; i < array.length; i++) {
+    for (let j = 0; j < array.length; j++) {
+      div = createDivs(array, i, j)
+      board.append(div)
     }
-    if (coord === "Fence") {
-      img.src = "images/fence.jpg"
-    }
-    if (coord === "Wolf") {
-      img.src = "images/volk.kachok.jpg"
-    }
-return img
+  }
 }
 
-// function ToPaintBoard(array){
+function createDivs(array, x, y) {
+  const div = document.createElement("div")
+  div.id = `${x}${y}`
+  img = createImg(array[x][y])
+  div.appendChild(img)
+  return div
+}
 
-// }
-
+function createImg(coord) {
+  const width = 150
+  img = document.createElement("img")
+  img.style.width = `${width}px`
+  img.style.height = `${width}px`
+  if (coord === "Rabbit") {
+    img.src = "images/rabbit.jpg"
+  }
+  if (coord === "Home") {
+    img.src = "images/home.png"
+  }
+  if (coord === "Fence") {
+    img.src = "images/fence.jpg"
+  }
+  if (coord === "Wolf") {
+    img.src = "images/wolf.jpg"
+  }
+  return img
+}
