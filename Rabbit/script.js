@@ -17,7 +17,7 @@ let characters = [
     img: "images/wolf.jpg"
   },
 ]
-
+const SIZE = 76
 function createMatrix(size) {
   let matrix = new Array()
   for (i = 0; i < size; i++) {
@@ -37,33 +37,36 @@ button.onclick = function () {
   toPaintBoard(array)
   let character = "Rabbit"
   document.addEventListener("keydown", function (event) {
-    let characterCoord = findCharecterCoord(array, character)
-    let oldX = characterCoord[0][0]
-    const oldY = characterCoord[0][1]
-    const y = oldY - 1
-    const Y = oldY + 1
-    const x = oldX - 1
-    const X = oldX + 1
+    const [x,y] = findCharecterCoord(array, character)[0]
+    let newX = x
+    let newY = y
     if (event.key === "ArrowUp") {
-      moveCharactertUp(array, oldX, x, oldY)
+        newX = x - 1
+      if(x === 0){
+        newX = array.length - 1
+      }
+    }else if (event.key === "ArrowDown") {
+      newX = x + 1
+      if(x === array.length - 1){
+         newX = 0
+      }
+    }else if (event.key === "ArrowLeft") {
+      newY = y - 1
+      if(y === 0){
+        newY = array.length - 1
+      }
+    }else if (event.key === "ArrowRight") {
+      newY = y + 1
+      if(y === array.length - 1){
+        newY = 0
+      }
     }
-    if (event.key === "ArrowDown") {
-      moveCharactertDown(array, oldX, X, oldY)
-    }
-    if (event.key === "ArrowLeft") {
-      moveCharactertLeft(array, oldX, y, oldY)
-    }
-    if (event.key === "ArrowRight") {
-      moveCharactertRight(array, oldX, Y, oldY)
-    }
+    moveCharacters(array, newX, newY)
     wolfCoord = findWolfCoords(array)
     wolfPosibleSteps(array)
-    //console.log(cellsNextToTheWolf(array, wolfCoord))
-
-    //console.log(chackCoordLegality([oldX,oldY], array))
+    toPaintBoard(array)
   })
 }
-
 function findRandomFreeCoord(array) {
   const x = Math.floor(Math.random() * array.length)
   const y = Math.floor(Math.random() * array.length)
@@ -112,67 +115,17 @@ function findCharecterCoord(array, character) {
   }
   return array.reduce(findInMatrix, [])
 }
-function moveCharactertUp(array, oldX, x, oldY) {
-  if (oldX === 0) {
-    newX = array.length - 1
-    if (array[newX][oldY] === null) {
-      array[newX][oldY] = "Rabbit"
-      array[oldX][oldY] = null
-    }
-  } else {
-    const newFreeCoord = array[x][oldY]
-    if (newFreeCoord === null) {
-      array[x][oldY] = "Rabbit"
-      array[oldX][oldY] = null
-    }
+function moveCharacters(array, x, y){
+  const [oldX,oldY] = findCharecterCoord(array, "Rabbit")[0]
+  if(array[x][y] === null){
+    array[oldX][oldY] = null
+    array[x][y] = "Rabbit"
   }
-  console.log(array)
-}
-function moveCharactertDown(array, oldX, x, oldY) {
-  if (oldX === array.length - 1) {
-    newX = 0
-    if (array[newX][oldY] === null) {
-      array[newX][oldY] = "Rabbit"
-      array[oldX][oldY] = null
-    }
-  } else {
-    const newFreeCoord = array[x][oldY]
-    if (newFreeCoord === null) {
-      array[x][oldY] = "Rabbit"
-      array[oldX][oldY] = null
-    }
+   if(array[x][y] === "Home"){
+    alert("You Win")
   }
-  console.log(array)
-}
-function moveCharactertLeft(array, oldX, y, oldY) {
-  if (oldY === 0) {
-    newY = array.length - 1
-    if (array[oldX][newY] === null) {
-      array[oldX][newY] = "Rabbit"
-      array[oldX][oldY] = null
-    }
-  } else {
-    const newFreeCoord = array[oldX][y]
-    if (newFreeCoord === null) {
-      array[oldX][y] = "Rabbit"
-      array[oldX][oldY] = null
-    }
-  }
-  console.log(array)
-}
-function moveCharactertRight(array, oldX, y, oldY) {
-  if (oldY === array.length - 1) {
-    newY = 0
-    if (array[oldX][newY] === null) {
-      array[oldX][newY] = "Rabbit"
-      array[oldX][oldY] = null
-    }
-  } else {
-    const newFreeCoord = array[oldX][y]
-    if (newFreeCoord === null) {
-      array[oldX][y] = "Rabbit"
-      array[oldX][oldY] = null
-    }
+   if(array[x][y] === "Wolf"){
+    alert("You lose")
   }
   console.log(array)
 }
@@ -216,39 +169,10 @@ function cellsNextToTheWolf(array, coord) {
       array[item[x]][item[y]] === null || array[item[x]][item[y]] === "Rabbit"
   )
 }
-
-// function moveWolf(array,[newX,newY],[oldX,oldY]){
-//     if(array[newX][newY] === "Rabbit"){
-//         message("You lose")
-//     }else{
-//         array[newX][newY] = "Wolf"
-//         array[oldX][oldY] = null
-//     }
-// }
-
 function calculateDistance([A, B], [A1, B1]) {
   dis = Math.sqrt(Math.pow(A - A1, 2) + Math.pow(B - B1, 2))
   return dis
 }
-
-// function wolfPosibleSteps(array) {
-//   const coords = findCharecterCoord(array, "Wolf")
-//   const rabbitCoordArray = findCharecterCoord(array, "Rabbit")
-//   coords.forEach(coord => {
-//     const wolfNearCells = cellsNextToTheWolf(array, coord)
-//     const nearCellIndexes = []
-//     let dist = []
-//     wolfNearCells.forEach(cell => {
-//       dist.push(calculateDistance(cell, rabbitCoordArray))
-//       nearCellIndexes.push(cell)
-//     })
-
-//     ind = dist.indexOf(Math.min(...dist))
-// console.log(ind)
-//     //moveWolf(array, nearCellIndexes[ind],coord)
-//   })
-// }
-
 function wolfPosibleSteps(array) {
   const coords = findCharecterCoord(array, "Wolf")
   const rabbitCoordArray = findCharecterCoord(array, "Rabbit")
@@ -268,12 +192,10 @@ function wolfPosibleSteps(array) {
   coords.forEach(wolfPosibleStep)
   return array
 }
-
 function toPaintBoard(array) {
   board = document.getElementById("board")
   board.innerHTML = ""
-
-  const width = array.length * 30 + 2 * array.length
+  const width = array.length * 76
   board.style.width = `${width}px`
   board.style.height = `${width}px`
   for (let i = 0; i < array.length; i++) {
@@ -283,7 +205,6 @@ function toPaintBoard(array) {
     }
   }
 }
-
 function createDivs(array, x, y) {
   const div = document.createElement("div")
   div.id = `${x}${y}`
@@ -291,12 +212,10 @@ function createDivs(array, x, y) {
   div.appendChild(img)
   return div
 }
-
 function createImg(coord) {
-  const width = 150
   img = document.createElement("img")
-  img.style.width = `${width}px`
-  img.style.height = `${width}px`
+  img.style.width = `${SIZE}px`
+  img.style.height = `${SIZE}px`
   if (coord === "Rabbit") {
     img.src = "images/rabbit.jpg"
   }

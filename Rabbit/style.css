@@ -30,7 +30,15 @@ body button:active{
     text-align: center;
 }
 .board{
-    height: 640px;
-    width: 640px;
+    height: 380px;
+    width: 380px;
     margin: 30px auto;
+}
+.board div{
+    border: 1px;
+    border-color: black;
+    float: left;
+    height: 70px;
+    width: 70px;
+    margin: 2px;
 }
