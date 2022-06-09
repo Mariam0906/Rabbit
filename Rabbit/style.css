@@ -7,16 +7,16 @@ body{
     position: absolute;
     top:0;
     left:0;
-    background-color: #9e88a8;
+    background-image: url(./images/field.jpg);
 }
 body button,select{
-    border:2px solid #868391;
+    border:2px solid #9c7036;
     font-size: 20px;
     width:100px;
     padding:4px;
     margin:3px;
     border-radius: 30px;
-    background-color:#aac2e0;
+    background-color:#ac7f3c;
     cursor: pointer;
     text-align: center;
     color: rgb(14, 13, 13);

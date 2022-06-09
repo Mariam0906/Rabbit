@@ -2,7 +2,7 @@ const elemValue = null
 let characters = [
   {
     name: "Rabbit",
-    img: "images/rabbit.jpg",
+    img: "images/bunny.png",
   },
   {
     name: "Home",
@@ -14,7 +14,7 @@ let characters = [
   },
   {
     name: "Wolf",
-    img: "images/wolf.jpg"
+    img: "images/wolf.jpg",
   },
 ]
 const SIZE = 76
@@ -37,27 +37,27 @@ button.onclick = function () {
   toPaintBoard(array)
   let character = "Rabbit"
   document.addEventListener("keydown", function (event) {
-    const [x,y] = findCharecterCoord(array, character)[0]
+    const [x, y] = findCharecterCoord(array, character)[0]
     let newX = x
     let newY = y
     if (event.key === "ArrowUp") {
-        newX = x - 1
-      if(x === 0){
+      newX = x - 1
+      if (x === 0) {
         newX = array.length - 1
       }
-    }else if (event.key === "ArrowDown") {
+    } else if (event.key === "ArrowDown") {
       newX = x + 1
-      if(x === array.length - 1){
-         newX = 0
+      if (x === array.length - 1) {
+        newX = 0
       }
-    }else if (event.key === "ArrowLeft") {
+    } else if (event.key === "ArrowLeft") {
       newY = y - 1
-      if(y === 0){
+      if (y === 0) {
         newY = array.length - 1
       }
-    }else if (event.key === "ArrowRight") {
+    } else if (event.key === "ArrowRight") {
       newY = y + 1
-      if(y === array.length - 1){
+      if (y === array.length - 1) {
         newY = 0
       }
     }
@@ -115,9 +115,9 @@ function findCharecterCoord(array, character) {
   }
   return array.reduce(findInMatrix, [])
 }
-function moveCharacters(array, x, y){
-  const [oldX,oldY] = findCharecterCoord(array, "Rabbit")[0]
-  if(array[x][y] === null){
+function moveCharacters(array, x, y) {
+  const [oldX, oldY] = findCharecterCoord(array, "Rabbit")[0]
+  if (array[x][y] === null) {
     array[oldX][oldY] = null
     array[x][y] = "Rabbit"
   }
@@ -178,14 +178,16 @@ function wolfPosibleSteps(array) {
   const rabbitCoordArray = findCharecterCoord(array, "Rabbit")
   const rabbitCoord = rabbitCoordArray[0]
   const wolfPosibleStep = (wolf) => {
-    const steps = cellsNextToTheWolf(array, wolf)
-    if (steps !== undefined) {
+  const steps = cellsNextToTheWolf(array, wolf)
+    if(steps !== undefined) {
       const dist = steps.map((step) => calculateDistance(rabbitCoord, step))
       const i = dist.indexOf(Math.min(...dist))
       const nearCell = steps[i]
       if (nearCell !== undefined) {
-        array[nearCell[0]][nearCell[1]] = "Wolf"
-        array[wolf[0]][wolf[1]] = null
+        if (array[nearCell[0]][nearCell[1]] === null) {
+          array[nearCell[0]][nearCell[1]] = "Wolf"
+          array[wolf[0]][wolf[1]] = null
+        }
       }
     }
   }
@@ -195,7 +197,7 @@ function wolfPosibleSteps(array) {
 function toPaintBoard(array) {
   board = document.getElementById("board")
   board.innerHTML = ""
-  const width = array.length * 76
+  const width = array.length *  SIZE
   board.style.width = `${width}px`
   board.style.height = `${width}px`
   for (let i = 0; i < array.length; i++) {
@@ -217,7 +219,7 @@ function createImg(coord) {
   img.style.width = `${SIZE}px`
   img.style.height = `${SIZE}px`
   if (coord === "Rabbit") {
-    img.src = "images/rabbit.jpg"
+    img.src = "images/bunny.png"
   }
   if (coord === "Home") {
     img.src = "images/home.png"
