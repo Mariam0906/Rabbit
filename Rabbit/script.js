@@ -28,83 +28,97 @@ function createMatrix(size) {
   }
   return matrix
 }
+
 const button = document.getElementById("startButton")
 button.onclick = function () {
   const MATRIX_SIZE = document.getElementById("select").value
-  let array = createMatrix(MATRIX_SIZE)
-  charactersPosition(array, MATRIX_SIZE)
-  console.log(array)
-  toPaintBoard(array)
+  const array = createMatrix(MATRIX_SIZE)
+  const gameState = {
+    gameArray: array,
+    isGameStart: true,
+  }
   let character = "Rabbit"
-  document.addEventListener("keydown", function (event) {
-    const [x, y] = findCharecterCoord(array, character)[0]
-    let newX = x
-    let newY = y
-    if (event.key === "ArrowUp") {
-      newX = x - 1
-      if (x === 0) {
-        newX = array.length - 1
-      }
-    } else if (event.key === "ArrowDown") {
-      newX = x + 1
-      if (x === array.length - 1) {
-        newX = 0
-      }
-    } else if (event.key === "ArrowLeft") {
-      newY = y - 1
-      if (y === 0) {
-        newY = array.length - 1
-      }
-    } else if (event.key === "ArrowRight") {
-      newY = y + 1
-      if (y === array.length - 1) {
-        newY = 0
-      }
-    }
-    moveCharacters(array, newX, newY)
-    wolfCoord = findWolfCoords(array)
-    wolfPosibleSteps(array)
-    toPaintBoard(array)
+  const num = 1
+  createMovementButtons(num)
+  charactersPosition(gameState, MATRIX_SIZE)
+  console.log(gameState.gameArray)
+  toPaintBoard(gameState)
+  moveWithButtons()
+  window.addEventListener("keydown", function (event) {
+    movement(gameState, character)
+    toPaintBoard(gameState)
   })
 }
-function findRandomFreeCoord(array) {
-  const x = Math.floor(Math.random() * array.length)
-  const y = Math.floor(Math.random() * array.length)
-  if (array[x][y] === null) {
+
+function movement(gameState, character, event) {
+  const [x, y] = findCharecterCoord(gameState, character)[0]
+  let newX = x
+  let newY = y
+  if (event === "ArrowUp") {
+    newX = x - 1
+    if (x === 0) {
+      newX = gameState.gameArray.length - 1
+    }
+  } else if (event === "ArrowDown") {
+    newX = x + 1
+    if (x === gameState.gameArray.length - 1) {
+      newX = 0
+    }
+  } else if (event === "ArrowLeft") {
+    newY = y - 1
+    if (y === 0) {
+      newY = gameState.gameArray.length - 1
+    }
+  } else if (event === "ArrowRight") {
+    newY = y + 1
+    if (y === gameState.gameArray.length - 1) {
+      newY = 0
+    }
+  }
+  if (gameState.isGameStart === true) {
+    moveCharacters(gameState, newX, newY)
+    wolfPosibleSteps(gameState)
+  }
+}
+
+function findRandomFreeCoord(gameState) {
+  const x = Math.floor(Math.random() * gameState.gameArray.length)
+  const y = Math.floor(Math.random() * gameState.gameArray.length)
+  if (gameState.gameArray[x][y] === null) {
     return [x, y]
   } else {
-    return findRandomFreeCoord(array)
+    return findRandomFreeCoord(gameState)
   }
 }
-function createPositionForCharacters(array, character) {
-  const [x, y] = findRandomFreeCoord(array)
-  array[x][y] = character
+function createPositionForCharacters(gameState, character) {
+  const [x, y] = findRandomFreeCoord(gameState)
+  gameState.gameArray[x][y] = character
 }
-function rabbitPosition(array) {
-  createPositionForCharacters(array, "Rabbit")
+function rabbitPosition(gameState) {
+  createPositionForCharacters(gameState, "Rabbit")
 }
-function wolvesPosition(array, wolfCount) {
+function wolvesPosition(gameState, wolfCount) {
   for (i = 0; i < wolfCount; i++) {
-    createPositionForCharacters(array, "Wolf")
+    createPositionForCharacters(gameState, "Wolf")
   }
 }
-function fencePosition(array, fenceCount) {
+function fencePosition(gameState, fenceCount) {
   for (i = 0; i < fenceCount; i++) {
-    createPositionForCharacters(array, "Fence")
+    createPositionForCharacters(gameState, "Fence")
   }
 }
-function homePosition(array) {
-  createPositionForCharacters(array, "Home")
+function homePosition(gameState) {
+  createPositionForCharacters(gameState, "Home")
 }
-function charactersPosition(array, size) {
+function charactersPosition(gameState, size) {
   const wolfCount = (size * 60) / 100
   const fenceCount = (size * 40) / 100
-  rabbitPosition(array)
-  wolvesPosition(array, wolfCount)
-  fencePosition(array, fenceCount)
-  homePosition(array)
+  rabbitPosition(gameState)
+  wolvesPosition(gameState, wolfCount)
+  fencePosition(gameState, fenceCount)
+  homePosition(gameState)
 }
-function findCharecterCoord(array, character) {
+function findCharecterCoord(gameState, character) {
   const findInMatrix = function (accumulator, row, x) {
     row.forEach((elem, y) => {
       if (elem === character) {
@@ -113,38 +127,42 @@ function findCharecterCoord(array, character) {
     })
     return accumulator
   }
-  return array.reduce(findInMatrix, [])
+  return gameState.gameArray.reduce(findInMatrix, [])
 }
-function moveCharacters(array, x, y) {
-  const [oldX, oldY] = findCharecterCoord(array, "Rabbit")[0]
-  if (array[x][y] === null) {
-    array[oldX][oldY] = null
-    array[x][y] = "Rabbit"
+function moveCharacters(gameState, x, y) {
+  const [oldX, oldY] = findCharecterCoord(gameState, "Rabbit")[0]
+  if (gameState.gameArray[x][y] === null) {
+    gameState.gameArray[oldX][oldY] = null
+    gameState.gameArray[x][y] = "Rabbit"
   }
-   if(array[x][y] === "Home"){
+  if (gameState.gameArray[x][y] === "Home") {
     alert("You Win")
+    gameState.isGameStart = false
   }
-   if(array[x][y] === "Wolf"){
+  if (gameState.gameArray[x][y] === "Wolf") {
     alert("You lose")
+    gameState.isGameStart = false
   }
-  console.log(array)
+  console.log(gameState.gameArray)
 }
-function findWolfCoords(array) {
-  const wolfCoord = findCharecterCoord(array, "Wolf")
-  return wolfCoord
-}
-function findAllNullCoords(array) {
-  const nullCoord = findCharecterCoord(array, null)
+
+function findAllNullCoords(gameState) {
+  const nullCoord = findCharecterCoord(gameState, null)
   console.log(nullCoord)
 }
-function chackCoordLegality([x, y], array) {
-  if (x >= 0 && x != array.length && y >= 0 && y != array.length) {
+function chackCoordLegality([x, y], gameState) {
+  if (
+    x >= 0 &&
+    x != gameState.gameArray.length &&
+    y >= 0 &&
+    y != gameState.gameArray.length
+  ) {
     return true
   } else {
     return false
   }
 }
-function cellsNextToTheWolf(array, coord) {
+function cellsNextToTheWolf(gameState, coord) {
   const [x, y] = [0, 1]
   const legalMove = []
   const [X, Y] = coord
@@ -152,65 +170,67 @@ function cellsNextToTheWolf(array, coord) {
   const down = [X + 1, Y]
   const left = [X, Y - 1]
   const right = [X, Y + 1]
-  if (chackCoordLegality(up, array)) {
+  if (chackCoordLegality(up, gameState)) {
     legalMove.push(up)
   }
-  if (chackCoordLegality(down, array)) {
+  if (chackCoordLegality(down, gameState)) {
     legalMove.push(down)
   }
-  if (chackCoordLegality(left, array)) {
+  if (chackCoordLegality(left, gameState)) {
     legalMove.push(left)
   }
-  if (chackCoordLegality(right, array)) {
+  if (chackCoordLegality(right, gameState)) {
     legalMove.push(right)
   }
   return legalMove.filter(
     (item) =>
-      array[item[x]][item[y]] === null || array[item[x]][item[y]] === "Rabbit"
+      gameState.gameArray[item[x]][item[y]] === null ||
+      gameState.gameArray[item[x]][item[y]] === "Rabbit"
   )
 }
 function calculateDistance([A, B], [A1, B1]) {
   dis = Math.sqrt(Math.pow(A - A1, 2) + Math.pow(B - B1, 2))
   return dis
 }
-function wolfPosibleSteps(array) {
-  const coords = findCharecterCoord(array, "Wolf")
-  const rabbitCoordArray = findCharecterCoord(array, "Rabbit")
+function wolfPosibleSteps(gameState) {
+  const coords = findCharecterCoord(gameState, "Wolf")
+  const rabbitCoordArray = findCharecterCoord(gameState, "Rabbit")
   const rabbitCoord = rabbitCoordArray[0]
   const wolfPosibleStep = (wolf) => {
-  const steps = cellsNextToTheWolf(array, wolf)
-    if(steps !== undefined) {
+    const steps = cellsNextToTheWolf(gameState, wolf)
+    if (steps !== undefined) {
       const dist = steps.map((step) => calculateDistance(rabbitCoord, step))
       const i = dist.indexOf(Math.min(...dist))
       const nearCell = steps[i]
       if (nearCell !== undefined) {
-        if (array[nearCell[0]][nearCell[1]] === null) {
-          array[nearCell[0]][nearCell[1]] = "Wolf"
-          array[wolf[0]][wolf[1]] = null
+        if (gameState.gameArray[nearCell[0]][nearCell[1]] === null) {
+          gameState.gameArray[nearCell[0]][nearCell[1]] = "Wolf"
+          gameState.gameArray[wolf[0]][wolf[1]] = null
         }
       }
     }
   }
   coords.forEach(wolfPosibleStep)
-  return array
 }
-function toPaintBoard(array) {
+function toPaintBoard(gameState) {
   board = document.getElementById("board")
   board.innerHTML = ""
-  const width = array.length *  SIZE
+  const width = gameState.gameArray.length * SIZE
+  const array = gameState.gameArray
   board.style.width = `${width}px`
   board.style.height = `${width}px`
-  for (let i = 0; i < array.length; i++) {
-    for (let j = 0; j < array.length; j++) {
-      div = createDivs(array, i, j)
+  for (let i = 0; i < gameState.gameArray.length; i++) {
+    for (let j = 0; j < gameState.gameArray.length; j++) {
+      div = createDivs(gameState, i, j)
+
       board.append(div)
     }
   }
 }
-function createDivs(array, x, y) {
+function createDivs(gameState, x, y) {
   const div = document.createElement("div")
   div.id = `${x}${y}`
-  img = createImg(array[x][y])
+  img = createImg(gameState.gameArray[x][y])
   div.appendChild(img)
   return div
 }
@@ -231,4 +251,39 @@ function createImg(coord) {
     img.src = "images/wolf.jpg"
   }
   return img
+}
+
+function createButtons(name, id) {
+  const button = document.createElement("button")
+  button.id = id
+  button.innerHTML = name
+  return button
+}
+function createMovementButtons(num) {
+  const buttonsDiv = document.getElementById("buttons")
+  while (buttonsDiv.lastElementChild) {
+    buttonsDiv.removeChild(buttonsDiv.lastElementChild)
+  }
+  const btnUp = createButtons("up", num)
+  btnUp.classList.add("up")
+  buttonsDiv.appendChild(btnUp)
+
+  const btnLeft = createButtons("left", num)
+  btnLeft.classList.add("left")
+  buttonsDiv.appendChild(btnLeft)
+
+  const btnRight = createButtons("right", num)
+  btnRight.classList.add("right")
+  buttonsDiv.appendChild(btnRight)
+
+  const btnDown = createButtons("down", num)
+  btnDown.classList.add("down")
+  buttonsDiv.appendChild(btnDown)
+}
+
+function moveWithButtons() {
+  btnUp = document.getElementsByClassName("up")
+  btnUp.onclick = function () {
+  console.log("jhgfd")
+  }
 }
