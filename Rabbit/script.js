@@ -38,14 +38,13 @@ button.onclick = function () {
     isGameStart: true,
   }
   let character = "Rabbit"
-  const num = 1
-  createMovementButtons(num)
+  createButtonsForMove()
   charactersPosition(gameState, MATRIX_SIZE)
   console.log(gameState.gameArray)
   toPaintBoard(gameState)
-  moveWithButtons()
-  window.addEventListener("keydown", function (event) {
-    movement(gameState, character)
+
+  window.addEventListener("click", function () {
+    moveWithButtons(gameState, character)
     toPaintBoard(gameState)
   })
 }
@@ -253,37 +252,49 @@ function createImg(coord) {
   return img
 }
 
-function createButtons(name, id) {
+function createButton(name, id) {
   const button = document.createElement("button")
   button.id = id
   button.innerHTML = name
   return button
 }
-function createMovementButtons(num) {
+function createButtonsForMove() {
   const buttonsDiv = document.getElementById("buttons")
   while (buttonsDiv.lastElementChild) {
     buttonsDiv.removeChild(buttonsDiv.lastElementChild)
   }
-  const btnUp = createButtons("up", num)
+  const btnUp = createButton("up", 1)
   btnUp.classList.add("up")
   buttonsDiv.appendChild(btnUp)
 
-  const btnLeft = createButtons("left", num)
+  const btnLeft = createButton("left", 2)
   btnLeft.classList.add("left")
   buttonsDiv.appendChild(btnLeft)
 
-  const btnRight = createButtons("right", num)
+  const btnRight = createButton("right", 3)
   btnRight.classList.add("right")
   buttonsDiv.appendChild(btnRight)
 
-  const btnDown = createButtons("down", num)
+  const btnDown = createButton("down", 4)
   btnDown.classList.add("down")
   buttonsDiv.appendChild(btnDown)
 }
 
-function moveWithButtons() {
-  btnUp = document.getElementsByClassName("up")
-  btnUp.onclick = function () {
-  console.log("jhgfd")
-  }
+function moveWithButtons(gameState, character) {
+  const btnUp = document.querySelector(".up")
+  const btnDown = document.querySelector(".down")
+  const btnLeft = document.querySelector(".left")
+  const btnRight = document.querySelector(".right")
+  btnUp.addEventListener("click", function () {
+    movement(gameState, character, "ArrowUp")
+  })
+  btnDown.addEventListener("click", function () {
+    movement(gameState, character, "ArrowDown")
+  })
+  btnLeft.addEventListener("click", function () {
+    movement(gameState, character, "ArrowLeft")
+  })
+  btnRight.addEventListener("click", function () {
+    movement(gameState, character, "ArrowRight")
+  })
 }
