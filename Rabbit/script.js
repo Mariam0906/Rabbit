@@ -41,12 +41,8 @@ button.onclick = function () {
   createButtonsForMove()
   charactersPosition(gameState, MATRIX_SIZE)
   console.log(gameState.gameArray)
+  moveWithButtons(gameState, character)
   toPaintBoard(gameState)
-
-  window.addEventListener("click", function () {
-    moveWithButtons(gameState, character)
-    toPaintBoard(gameState)
-  })
 }
 
 function movement(gameState, character, event) {
@@ -77,6 +73,7 @@ function movement(gameState, character, event) {
   if (gameState.isGameStart === true) {
     moveCharacters(gameState, newX, newY)
     wolfPosibleSteps(gameState)
+    toPaintBoard(gameState)
   }
 }
 
@@ -135,11 +132,11 @@ function moveCharacters(gameState, x, y) {
     gameState.gameArray[x][y] = "Rabbit"
   }
   if (gameState.gameArray[x][y] === "Home") {
-    alert("You Win")
+    alert("RABBIT WON")
     gameState.isGameStart = false
   }
   if (gameState.gameArray[x][y] === "Wolf") {
-    alert("You lose")
+    alert("WOLVES WON")
     gameState.isGameStart = false
   }
   console.log(gameState.gameArray)
@@ -191,6 +188,7 @@ function calculateDistance([A, B], [A1, B1]) {
   dis = Math.sqrt(Math.pow(A - A1, 2) + Math.pow(B - B1, 2))
   return dis
 }
+
 function wolfPosibleSteps(gameState) {
   const coords = findCharecterCoord(gameState, "Wolf")
   const rabbitCoordArray = findCharecterCoord(gameState, "Rabbit")
@@ -211,21 +209,31 @@ function wolfPosibleSteps(gameState) {
   }
   coords.forEach(wolfPosibleStep)
 }
+
 function toPaintBoard(gameState) {
+  const array = gameState.gameArray
   board = document.getElementById("board")
   board.innerHTML = ""
-  const width = gameState.gameArray.length * SIZE
-  const array = gameState.gameArray
+  //removeChildes()
+  console.log(board)
+  const width = array.length * SIZE
   board.style.width = `${width}px`
   board.style.height = `${width}px`
-  for (let i = 0; i < gameState.gameArray.length; i++) {
-    for (let j = 0; j < gameState.gameArray.length; j++) {
+  for (let i = 0; i < array.length; i++) {
+    for (let j = 0; j < array.length; j++) {
       div = createDivs(gameState, i, j)
-
-      board.append(div)
+      board.appendChild(div)
     }
   }
 }
+
+function removeChildes() {
+  const board = document.getElementById("board")
+  while (board.lastElementChild) {
+    board.removeChild(board.lastElementChild)
+  }
+}
+
 function createDivs(gameState, x, y) {
   const div = document.createElement("div")
   div.id = `${x}${y}`
@@ -258,6 +266,7 @@ function createButton(name, id) {
   button.innerHTML = name
   return button
 }
+
 function createButtonsForMove() {
   const buttonsDiv = document.getElementById("buttons")
   while (buttonsDiv.lastElementChild) {

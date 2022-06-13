@@ -42,3 +42,7 @@ body button:active{
     width: 70px;
     margin: 2px;
 }
+.buttons.up{
+    width: 100px;
+    height: 1000px;
+}
