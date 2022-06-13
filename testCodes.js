@@ -36,6 +36,26 @@
 //   shuffle(arr);
 //   console.log(arr);
 
+// const buttonsImg = [
+//   {
+//     name: "up",
+//     img: "images/arrow.png",
+//   },
+//   {
+//     name: "down",
+//     img: "images/arrow(3).png",
+//   },
+//   {
+//     name: "left",
+//     img: "images/arrow(1).png",
+//   },
+//   {
+//     name: "right",
+//     img: "images/arrow(2).png",
+//   },
+// ]
+
+
 
 
 // function moveCharactertUp(array, oldX, x, oldY){

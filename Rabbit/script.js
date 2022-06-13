@@ -1,5 +1,5 @@
 const elemValue = null
-let characters = [
+const characters = [
   {
     name: "Rabbit",
     img: "images/bunny.png",
@@ -17,6 +17,7 @@ let characters = [
     img: "images/wolf.jpg",
   },
 ]
+
 const SIZE = 76
 function createMatrix(size) {
   let matrix = new Array()
@@ -280,13 +281,13 @@ function createButtonsForMove() {
   btnLeft.classList.add("left")
   buttonsDiv.appendChild(btnLeft)
 
-  const btnRight = createButton("right", 3)
-  btnRight.classList.add("right")
-  buttonsDiv.appendChild(btnRight)
-
-  const btnDown = createButton("down", 4)
+  const btnDown = createButton("down", 3)
   btnDown.classList.add("down")
   buttonsDiv.appendChild(btnDown)
+
+  const btnRight = createButton("right", 4)
+  btnRight.classList.add("right")
+  buttonsDiv.appendChild(btnRight)
 }
 
 function moveWithButtons(gameState, character) {
