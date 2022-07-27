@@ -6,7 +6,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    background-image: url(./images/field.jpg);
+    background-color: #af9a7f;
 }
 
 body button,
@@ -28,7 +28,7 @@ body button:active {
     color: #b2a4e6;
 }
 
-.gmContainer {
+.container {
     padding: 10px;
     text-align: center;
 }
@@ -39,8 +39,8 @@ body button:active {
     margin: 30px auto;
 }
 
-.Board div {
-    border: 1px;
+.board div {
+    border: 5px;
     border-color: black;
     float: left;
     height: 70px;
@@ -50,6 +50,4 @@ body button:active {
 
 .buttons {
     text-align: center;
-    background: red
-    ;
 }

@@ -43,7 +43,7 @@ function createMatrix(size) {
 let GAME_BOARD_NUMBER = 1
 const button = document.getElementById("startButton")
 button.onclick = function () {
-  const MATRIX_SIZE = document.getElementById("select").value
+  const MATRIX_SIZE = document.querySelector("select").value
   const array = createMatrix(MATRIX_SIZE)
   const gameState = {
     gameArray: array,
@@ -94,8 +94,8 @@ function userMove(gameState, character, direction) {
   const [newX, newY] = calcRabbitNextCoord(gameState, character, direction)
   moveRabbit(gameState, newX, newY)
 
-  //moveWolves(gameState)
-  //paintBoard(gameState)
+  moveWolves(gameState)
+  paintBoard(gameState)
 }
 
 function findRandomFreeCoord(gameState) {
@@ -321,12 +321,11 @@ function moveWithButtons(gameState, character) {
   btnRight.addEventListener("click", function () {
     userMove(gameState, character, "ArrowRight")
   })
-  let interval = setInterval(moveWolves, 2000, gameState)
+  //let interval = setInterval(moveWolves, 2000, gameState)
   //let interval2 = setInterval(paintBoard, 2000, gameState )
-  if(gameState.isGameStart === false){
- 
-  clearInterval(interval)
-  clearInterval(interval2)
-}
+//   if(gameState.isGameStart === false){
+//   clearInterval(interval)
+//   clearInterval(interval2)
+// }
 }
 
